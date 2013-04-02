@@ -1,0 +1,130 @@
+[ {
+  "title" : "test",
+  "style" : [ {
+    "selector" : "node",
+    "css" : {
+      "background-color" : "rgb(0,153,204)",
+      "color" : "rgb(0,0,0)",
+      "font-weight" : 100,
+      "border-color" : "rgb(0,0,0)",
+      "border-width" : 2.0,
+      "width" : 60.0,
+      "height" : 40.0,
+      "opacity" : 1.0,
+      "shape" : "ellipse",
+      "content" : "data(name)"
+    }
+  }, {
+    "selector" : "edge",
+    "css" : {
+      "width" : 1.0,
+      "line-color" : "rgb(64,64,64)",
+      "opacity" : 1.0,
+      "content" : "data(interaction)"
+    }
+  }, {
+    "selector" : ":selected",
+    "css" : {
+      "background-color" : "rgb(255,255,0)",
+      "line-color" : "rgb(255,0,0)",
+      "source-arrow-color" : "rgb(255,0,0)",
+      "target-arrow-color" : "rgb(255,0,0)"
+    }
+  } ]
+}, {
+  "title" : "default",
+  "style" : [ {
+    "selector" : "node",
+    "css" : {
+      "background-color" : "rgb(255,255,255)",
+      "color" : "rgb(255,255,255)",
+      "font-weight" : 100,
+      "border-color" : "rgb(102,102,102)",
+      "border-width" : 1.5,
+      "width" : 70.0,
+      "height" : 30.0,
+      "opacity" : 1.0,
+      "shape" : "ellipse",
+      "content" : "data(gene_name)"
+    }
+  }, {
+    "selector" : "edge",
+    "css" : {
+      "width" : 100.0,
+      "line-color" : "rgb(102,102,102)",
+      "opacity" : 1.0
+    }
+  }, {
+    "selector" : ":selected",
+    "css" : {
+      "background-color" : "rgb(255,255,0)",
+      "line-color" : "rgb(255,0,0)",
+      "source-arrow-color" : "rgb(255,0,0)",
+      "target-arrow-color" : "rgb(255,0,0)"
+    }
+  } ]
+}, {
+  "title" : "NeXO Overview",
+  "style" : [ {
+    "selector" : "node",
+    "css" : {
+      "background-color" : "rgb(255,255,255)",
+      "color" : "rgb(255,255,255)",
+      "font-weight" : 100,
+      "border-color" : "rgb(102,102,102)",
+      "border-width" : 1.5,
+      "width" : 70.0,
+      "height" : 30.0,
+      "opacity" : 1.0,
+      "shape" : "ellipse",
+      "content" : "data(CC Annotation)"
+    }
+  }, {
+    "selector" : "edge",
+    "css" : {
+      "width" : 100.0,
+      "line-color" : "rgb(102,102,102)",
+      "opacity" : 1.0
+    }
+  }, {
+    "selector" : ":selected",
+    "css" : {
+      "background-color" : "rgb(255,255,0)",
+      "line-color" : "rgb(255,0,0)",
+      "source-arrow-color" : "rgb(255,0,0)",
+      "target-arrow-color" : "rgb(255,0,0)"
+    }
+  } ]
+}, {
+  "title" : "NeXO CC Analysis",
+  "style" : [ {
+    "selector" : "node",
+    "css" : {
+      "background-color" : "rgb(255,255,255)",
+      "color" : "rgb(255,255,255)",
+      "font-weight" : 100,
+      "border-color" : "rgb(102,102,102)",
+      "border-width" : 1.5,
+      "width" : 70.0,
+      "height" : 30.0,
+      "opacity" : 1.0,
+      "shape" : "ellipse",
+      "content" : "data(CC Annotation)"
+    }
+  }, {
+    "selector" : "edge",
+    "css" : {
+      "width" : 100.0,
+      "line-color" : "rgb(102,102,102)",
+      "opacity" : 1.0
+    }
+  }, {
+    "selector" : ":selected",
+    "css" : {
+      "background-color" : "rgb(255,255,0)",
+      "line-color" : "rgb(255,0,0)",
+      "source-arrow-color" : "rgb(255,0,0)",
+      "target-arrow-color" : "rgb(255,0,0)"
+    }
+  } ]
+} ]

@@ -3,83 +3,111 @@
  *
  * @type {string}
  */
+(function () {
+    "use strict";
 
-var NETWORK_DATA_URI = 'http://localhost:9988/v1/networks/galFiltered.sif.json';
-var NETWORK_DATA_URI2 = 'data/galFiltered2.json';
-var NETWORK_WINDOW_TAG = '#network-view';
+    var NETWORK_DATA_URI = 'http://localhost:9988/v1/networks/views';
+    var NETWORK_LOCAL_DATA_URI = 'data/galFiltered2.json';
+    var VISUAL_STYLE_URI = 'data/vs.json';
+//    var NETWORK_LOCAL_DATA_URI = 'data/galFiltered3.json';
+//    var VISUAL_STYLE_URI = 'data/vs.json';
 
-$(function () {
+    var NETWORK_WINDOW_TAG = '#network-view';
 
-    $.getJSON(NETWORK_DATA_URI2,
-        function (jsonNetwork) {
-            console.log(' --> # of CyNodes: ' + jsonNetwork.elements.nodes.length);
-            console.log(' --> # of CyEdges: ' + jsonNetwork.elements.edges.length);
-            drawNetwork(jsonNetwork);
+    $(function () {
+
+        var originalPositions = {}, networkData = null, visualStyleDict = {}, requests = [];
+
+        function getPositions(nodes) {
+            var nodeCount = nodes.length;
+            for (var i = 0; i < nodeCount; i++) {
+                var node = nodes[i];
+                var position = node.position;
+                originalPositions[node.data.id] = {x: position.x, y: position.y};
+
+            }
+
+            console.log('Position = ' + JSON.stringify(originalPositions));
+            return originalPositions;
         }
-    );
 
-    function drawNetwork(cyNetwork) {
-        console.log('Drawing Network...');
+        requests.push(
+            $.getJSON(NETWORK_LOCAL_DATA_URI, function (json) {
+                networkData = json;
+            })
+        );
 
-        $(NETWORK_WINDOW_TAG)
-            .cytoscape({
-                elements: {
-                    nodes: cyNetwork.elements.nodes,
-                    edges: cyNetwork.elements.edges
-                },
-
-                style: cytoscape.stylesheet()
-                    .selector("node")
-                    .css({
-                        "content": "data(name)",
-                        "shape": "data(shape)",
-                        "border-width": 2,
-                        "background-color": "#DDD",
-                        "border-color": "#129",
-                        "opacity": "0.7"
-
-                    })
-                    .selector("edge")
-                    .css({
-                        "width": "mapData(weight, 0, 100, 1, 4)",
-                        "target-arrow-shape": "triangle",
-                        "source-arrow-shape": "circle",
-                        "line-color": "#444",
-                        "opacity": "0.7"
-                    })
-                    .selector(":selected")
-                    .css({
-                        "background-color": "#e99",
-                        "line-color": "#e99",
-                        "source-arrow-color": "#e99",
-                        "target-arrow-color": "#e99",
-                        "border-color": "#555",
-                    })
-                    .selector(".ui-cytoscape-edgehandles-source")
-                    .css({
-                        "border-color": "#5CC2ED",
-                        "border-width": 3
-                    })
-                    .selector(".ui-cytoscape-edgehandles-target, node.ui-cytoscape-edgehandles-preview")
-                    .css({
-                        "background-color": "#5CC2ED"
-                    })
-                    .selector("edge.ui-cytoscape-edgehandles-preview")
-                    .css({
-                        "line-color": "#5CC2ED"
-                    })
-                    .selector("node.ui-cytoscape-edgehandles-preview, node.intermediate")
-                    .css({
-                        "shape": "rectangle",
-                        "width": 15,
-                        "height": 15
-                    }),
-
-                ready: function () {
-                    window.cy = this;
-                    cy.layout({ name: 'circular' });
+        requests.push(
+            $.getJSON(VISUAL_STYLE_URI, function (json) {
+                var visualStyles = json;
+                for(var i=0; i<visualStyles.length; i++) {
+                    visualStyleDict[visualStyles[i].title] = visualStyles[i].style;
                 }
-            });
-    }
-});
+            })
+        );
+
+        $.when.apply($, requests).done(function () {
+            originalPositions = getPositions(networkData.elements.nodes);
+            drawNetwork(networkData, visualStyleDict);
+        });
+
+        function drawNetwork(cyNetwork, vsDict) {
+
+            var defaultStyle = vsDict['default'];
+
+            console.log('Drawing Network: Style = ' + defaultStyle);
+
+            var elementCount = defaultStyle.length;
+
+            $(NETWORK_WINDOW_TAG)
+                .cytoscape({
+                    elements: {
+                        nodes: cyNetwork.elements.nodes,
+                        edges: cyNetwork.elements.edges
+                    },
+
+                    style: (function () {
+                        var curStyleObj = cytoscape.stylesheet();
+
+                        for (var i = 0; i < elementCount; i++) {
+                            console.log('# Selector = ' + defaultStyle[i].selector);
+                            console.log('# CSS = ' + JSON.stringify(defaultStyle[i].css));
+                            curStyleObj.selector(defaultStyle[i].selector).css(defaultStyle[i].css);
+                        }
+
+                        // Set some js-dependent props
+                        return curStyleObj.selector(".ui-cytoscape-edgehandles-source")
+                            .css({
+                                "border-color": "#5CC2ED",
+                                "border-width": 3
+                            })
+                            .selector(".ui-cytoscape-edgehandles-target, node.ui-cytoscape-edgehandles-preview")
+                            .css({
+                                "background-color": "#5CC2ED"
+                            })
+                            .selector("edge.ui-cytoscape-edgehandles-preview")
+                            .css({
+                                "line-color": "#5CC2ED"
+                            })
+                            .selector("node.ui-cytoscape-edgehandles-preview, node.intermediate")
+                            .css({
+                                "shape": "rectangle",
+                                "width": 15,
+                                "height": 15
+                            });
+                    })(),
+
+                    ready: function () {
+                        window.cy = this;
+
+                        cy.layout({
+                            name: 'preset',
+                            positions: originalPositions
+                        });
+                    }
+                });
+        }
+    });
+
+}).call(this);
 
