@@ -7,9 +7,9 @@
     "use strict";
 
     var NETWORK_DATA_URI = 'http://localhost:9988/v1/networks/views';
-    var NETWORK_LOCAL_DATA_URI = 'data/galFiltered2.json';
+//    var NETWORK_LOCAL_DATA_URI = 'data/galFiltered2.json';
     var VISUAL_STYLE_URI = 'data/vs.json';
-//    var NETWORK_LOCAL_DATA_URI = 'data/galFiltered3.json';
+    var NETWORK_LOCAL_DATA_URI = 'data/nexo.json';
 //    var VISUAL_STYLE_URI = 'data/vs.json';
 
     var NETWORK_WINDOW_TAG = '#network-view';
